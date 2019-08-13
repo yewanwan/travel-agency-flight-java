@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ta-flight-svc
+  name: ta-flight
 spec:
     type: ClusterIP
     ports:
