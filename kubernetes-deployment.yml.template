@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ta-flight 
+  labels:
+    run: ta-flight
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: ta-flight 
+    spec:
+      containers:
+      - image: $OKE_REPOSITORY:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+        imagePullPolicy: Always
+        name: ta-flight
+        ports:
+        - containerPort: 8001
+          protocol: TCP
+        env:
+        - name: "DB_USER"
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: db.user
+        - name: "DB_PASSWORD"
+          valueFrom:
+            secretKeyRef:
+              name: db-creds
+              key: db.password
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: ocirsecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ta-flight-svc
+spec:
+    type: ClusterIP
+    ports:
+    - name: http
+      port: 9002
+      targetPort: 8001
+      protocol: TCP
+    selector:
+      run: ta-flight
