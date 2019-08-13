@@ -15,4 +15,4 @@ EXPOSE 8001
 
 WORKDIR /app
 
-CMD ["java", "-jar", "target/travel-agency-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/travel-agency-flight-0.0.1-SNAPSHOT.jar"]
