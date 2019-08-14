@@ -59,12 +59,12 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
     #ingress.kubernetes.io/add-base-url: 'true'
-    #ingress.kubernetes.io/rewrite-target: /
+    ingress.kubernetes.io/rewrite-target: /flights
 spec:
   rules:
   - http:
       paths:
-      - path: /flights
+      - path: /flights-graal
         backend:
           serviceName: ta-flight-graal-svc
           servicePort: 7002
