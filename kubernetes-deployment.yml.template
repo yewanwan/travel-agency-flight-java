@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ta-flight
+  name: ta-flight-svc
 spec:
     type: ClusterIP
     ports:
@@ -51,3 +51,20 @@ spec:
       protocol: TCP
     selector:
       run: ta-flight
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ta-flight-ing
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    #ingress.kubernetes.io/add-base-url: 'true'
+    #ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /flights
+        backend:
+          serviceName: ta-flight-svc
+          servicePort: 9002
