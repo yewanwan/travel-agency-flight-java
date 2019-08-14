@@ -58,8 +58,8 @@ metadata:
   name: ta-flight-graal-ing
   annotations:
     kubernetes.io/ingress.class: traefik
-    ingress.kubernetes.io/add-base-url: 'true'
-    ingress.kubernetes.io/rewrite-target: /
+    #ingress.kubernetes.io/add-base-url: 'true'
+    #ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - http:
