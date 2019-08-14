@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ta-flight 
+  name: ta-flight-graal
   labels:
-    run: ta-flight
+    run: ta-flight-graal
 spec:
   replicas: 1
   strategy:
@@ -14,12 +14,12 @@ spec:
   template:
     metadata:
       labels:
-        run: ta-flight 
+        run: ta-flight-graal
     spec:
       containers:
-      - image: $OKE_REPOSITORY:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+      - image: $OKE_REPOSITORY_GRAAL:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         imagePullPolicy: Always
-        name: ta-flight
+        name: ta-flight-graal
         ports:
         - containerPort: 8001
           protocol: TCP
@@ -41,13 +41,30 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ta-flight
+  name: ta-flight-graal
 spec:
     type: ClusterIP
     ports:
     - name: http
-      port: 9002
+      port: 7002
       targetPort: 8001
       protocol: TCP
     selector:
-      run: ta-flight
+      run: ta-flight-graal
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ta-flight-graal-ing
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/add-base-url: 'true'
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /flights
+        backend:
+          serviceName: web-pc-oracle-svc
+          servicePort: 7002
