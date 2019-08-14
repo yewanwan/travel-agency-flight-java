@@ -12,7 +12,7 @@ build:
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         username: $OKE_USERNAME
         password: $OKE_PASSWORD
-        repository: $OKE_REPOSITORY
+        repository: $OKE_REPOSITORY_GRAAL
         registry: $OKE_REGISTRY
 
 deploy-to-oke:
