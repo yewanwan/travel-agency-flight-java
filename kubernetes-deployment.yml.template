@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ta-flight-graal
+  name: ta-flight-graal-svc
 spec:
     type: ClusterIP
     ports:
@@ -66,5 +66,5 @@ spec:
       paths:
       - path: /flights
         backend:
-          serviceName: web-pc-oracle-svc
+          serviceName: ta-flight-graal-svc
           servicePort: 7002
