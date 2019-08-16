@@ -15,7 +15,7 @@ build:
         repository: $OKE_REPOSITORY_APM
         registry: $OKE_REGISTRY
 
-deploy-to-oke:
+deploy-to-oke-apm:
   box:
         id: alpine
         cmd: /bin/sh
