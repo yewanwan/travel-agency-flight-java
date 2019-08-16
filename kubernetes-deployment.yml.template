@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ta-flight 
+  name: ta-flight-apm
   labels:
-    run: ta-flight
+    run: ta-flight-apm
 spec:
   replicas: 1
   strategy:
@@ -14,12 +14,13 @@ spec:
   template:
     metadata:
       labels:
-        run: ta-flight 
+        run: ta-flight-apm
     spec:
+      hostname: spring-boot-apm
       containers:
-      - image: $OKE_REPOSITORY:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
+      - image: $OKE_REPOSITORY_APM:$WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         imagePullPolicy: Always
-        name: ta-flight
+        name: ta-flight-apm
         ports:
         - containerPort: 8001
           protocol: TCP
@@ -41,30 +42,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ta-flight-svc
+  name: ta-flight-apm-svc
 spec:
     type: ClusterIP
     ports:
     - name: http
-      port: 9002
+      port: 9005
       targetPort: 8001
       protocol: TCP
     selector:
-      run: ta-flight
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: ta-flight-ing
-  annotations:
-    kubernetes.io/ingress.class: traefik
-    #ingress.kubernetes.io/add-base-url: 'true'
-    #ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - http:
-      paths:
-      - path: /flights
-        backend:
-          serviceName: ta-flight-svc
-          servicePort: 9002
+      run: ta-flight-apm

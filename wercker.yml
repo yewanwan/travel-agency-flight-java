@@ -5,14 +5,14 @@ build:
   steps:
     - internal/docker-build:
         dockerfile: Dockerfile
-        image-name: travel-agency-flight-java
+        image-name: travel-agency-flight-java-apm
 
     - internal/docker-push:
-        image-name: travel-agency-flight-java
+        image-name: travel-agency-flight-java-apm
         tag: $WERCKER_GIT_BRANCH-$WERCKER_GIT_COMMIT
         username: $OKE_USERNAME
         password: $OKE_PASSWORD
-        repository: $OKE_REPOSITORY
+        repository: $OKE_REPOSITORY_APM
         registry: $OKE_REGISTRY
 
 deploy-to-oke:
@@ -28,24 +28,3 @@ deploy-to-oke:
         token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: apply -f $WERCKER_ROOT/kubernetes-deployment.yml --namespace=$APP_NAMESPACE
-
-functional-test:
-  box:
-    id: openjdk:8-alpine 
-  steps:
-    - script:
-        name: Run Test
-        code: |
-            apk add maven
-            mvn install:install-file -Dfile=lib/ojdbc8.jar -DgroupId=com.oracle.jdbc -DartifactId=ojdbc8 -Dversion=18.3 -Dpackaging=jar
-            mvn clean package
-            exit_status=$?
-            echo "### start test ###"
-            #timeout -t 10 java -jar target/travel-agency-flight-0.0.1-SNAPSHOT.jar
-            #exit_status=$?
-            if [ $exit_status -eq 0 ]; then
-              echo "### test passed ###"
-            else
-              echo "### test failed ###"
-              exit -1
-            fi
