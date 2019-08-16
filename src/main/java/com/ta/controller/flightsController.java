@@ -18,7 +18,7 @@ public class flightsController {
 	FlightsService flightsService;
 
 	@RequestMapping(value="/flights",method=RequestMethod.GET,produces="application/json;charset=UTF-8")
-	public String getMarathonMatch() {
+	public String getFlights() {
 		JsonArray flightsListjsonArray = new JsonArray();
 		List<Map<String, Object>> returnFlights = null;
 		returnFlights = flightsService.getFlightsList();
