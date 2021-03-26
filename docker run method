@@ -1,0 +1,1 @@
+docker run -i -t -e DB_USER="c##omcuser" -e DB_PASSWORD="WElcome123456_#" -p 8080:8001 dockerimageid
